@@ -1,0 +1,16 @@
+.DS_Store
+.DS_Store?
+node_modules
+yarn-error.log
+.vagrant
+wp-cli
+wordpress
+.ansible
+.bundle
+.envrc
+.github/
+.idea/
+.travis.yml
+npm-debug.log
+package.box
+playbook.retry

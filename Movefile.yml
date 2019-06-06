@@ -1,0 +1,86 @@
+global:
+  sql_adapter: default
+
+local:
+  vhost: "http://vccw.test/"
+  wordpress_path: "/var/www/wordpress"
+
+  database:
+    name: "wordpress"
+    user: "wordpress"
+    password: "wordpress"
+    host: "localhost"
+    charset: "utf8"
+
+  # paths: # you can customize wordpress internal paths
+  #   wp_config: "wp-config-custom.php"
+  #   wp_content: "wp-content"
+  #   uploads: "wp-content/uploads"
+  #   plugins: "wp-content/plugins"
+  #   mu_plugins: "wp-content/mu-plugins"
+  #   themes: "wp-content/themes"
+  #   languages: "wp-content/languages"
+
+staging:
+  vhost: "http://ステージング環境のドメイン"
+  wordpress_path: "/path/" # ステージング環境のWordPressのpath
+
+  database:
+    name: "database_name" # ステージング環境のDB名
+    user: "database_user" # ステージング環境のDBユーザー名
+    password: "database_password" # ステージング環境のDBパスワード
+    host: "hostname" # ステージング環境のDBホスト名
+    port: "3306" # 3308から変更
+    mysqldump_options: "--max_allowed_packet=50MB"
+    charset: "utf8"
+
+  exclude:
+    - ".git/"
+    - ".gitignore"
+    - ".sass-cache/"
+    - "bin/"
+    - "tmp/*"
+    - "Gemfile*"
+    - "movefile.yml"
+    - "wp-config.php"
+    - "wp-content/*.sql"
+    - ".htaccess"
+
+  ssh:
+    host: "" # 本番環境ホスト名（初期ドメイン）
+    user: ""
+    port: 10022
+    password: ""
+    rsync_options: --verbose
+
+production:
+  vhost: "http://本番環境のドメイン"
+  wordpress_path: "/path/" # 本番環境のWordPressのpath
+
+  database:
+    name: "database_name" # 本番環境のDB名
+    user: "database_user" # 本番環境のDBユーザー名
+    password: "database_password" # 本番環境のDBパスワード
+    host: "hostname" # 本番環境のDBホスト名
+    port: "3306" # 3308から変更
+    mysqldump_options: "--max_allowed_packet=50MB"
+    charset: "utf8"
+
+  exclude:
+    - ".git/"
+    - ".gitignore"
+    - ".sass-cache/"
+    - "bin/"
+    - "tmp/*"
+    - "Gemfile*"
+    - "movefile.yml"
+    - "wp-config.php"
+    - "wp-content/*.sql"
+    - ".htaccess"
+
+  ssh:
+    host: "" # 本番環境ホスト名（初期ドメイン）
+    user: ""
+    port: 10022
+    password: ""
+    rsync_options: --verbose
