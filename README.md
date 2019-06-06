@@ -3,10 +3,10 @@ WordPress theme development environment.
 
 ## Quick start
 #### 1.Install VirtualBox.
-VirtualBox[https://www.virtualbox.org/]
+[VirtualBox](https://www.virtualbox.org/)
 
 #### 2.Install VAGRANT.
-VAGRANT[https://www.vagrantup.com/]
+[VAGRANT](https://www.vagrantup.com/)
 
 #### 3.Install vagrant plugin and box.
 ```
@@ -20,7 +20,7 @@ $ git clone https://github.com/masatojpn/wpthemebuilder.git
 ```
 or
 
-Download[https://github.com/masatojpn/wpthemebuilder/archive/master.zip]
+[Download ZIP](https://github.com/masatojpn/wpthemebuilder/archive/master.zip)
 
 #### 5.Run vagrant.
 ```
