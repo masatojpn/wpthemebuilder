@@ -39,7 +39,7 @@ $ npm install
 $ npm run all
 ```
 
-## Directory for development.
+## Develop directory.
 `/_theme/blanktheme/`
 
 ## Deploy
