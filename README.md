@@ -8,21 +8,25 @@ WordPress theme development environment.
 #### 2.Install VAGRANT.
 [VAGRANT](https://www.vagrantup.com/)
 
-#### 3.Install vagrant plugin and box.
+#### 3.Install plugin vagrant-hostupdater(optional)
 ```
 $ vagrant plugin install vagrant-hostsupdater
+```
+
+#### 4.Install Vagrant Box.
+```
 $ vagrant box add vccw-team/xenial64
 ```
 
-#### 4.Clone or Download.
+#### 5.Clone this repository
 ```
 $ git clone https://github.com/masatojpn/wpthemebuilder.git
 ```
-or
 
+or download.
 [Download ZIP](https://github.com/masatojpn/wpthemebuilder/archive/master.zip)
 
-#### 5.Run vagrant.
+#### 6.Run vagrant.
 ```
 $ cd wpthemebuilder
 $ vagrant up
@@ -34,12 +38,12 @@ $ cd _theme/blanktheme
 $ npm install
 ```
 
-#### 7.Watch and build.
+#### 7.Build theme file.
 ```
 $ npm run all
 ```
 
-## Develop directory.
+## Development directory.
 `/_theme/blanktheme/`
 
 ## Deploy
