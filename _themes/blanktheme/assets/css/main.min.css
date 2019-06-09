@@ -1,12 +1,1 @@
-@charset "UTF-8";
-
-div {
-  display: block;
-  position: left;
-}
-
-h2 {
-  color: #f00;
-}
-
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL19zY3NzL21haW4uc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxnQkFBZ0I7O0FBRWhCO0VBQ0UsY0FBYztFQUNkLGNBQWM7QUFDaEI7O0FBRUE7RUFDRSxXQUFXO0FBQ2IiLCJmaWxlIjoibWFpbi5taW4uY3NzIiwic291cmNlc0NvbnRlbnQiOlsiQGNoYXJzZXQgXCJVVEYtOFwiO1xuXG5kaXYge1xuICBkaXNwbGF5OiBibG9jaztcbiAgcG9zaXRpb246IGxlZnQ7XG59XG5cbmgyIHtcbiAgY29sb3I6ICNmMDA7XG59XG4iXX0= */
+h1{color:#f00}

@@ -1,6 +1,6 @@
 {
   "name": "wpthemebuilder",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "WordPress theme builder.",
   "keywords": [
     "WordPress",
@@ -13,10 +13,13 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf ../../wordpress/wp-content/themes/blanktheme/**",
-    "stylelint": "stylelint --config stylelintrc.js --syntax scss _scss/** --fix",
-    "compile": "node-sass -w --include-path scss ./_scss/main.scss ./assets/css/main.css --output-style expanded",
-    "minify": "node-sass -w --include-path scss ./_scss/main.scss ./assets/css/main.min.css --output-style compressed",
-    "build": "postcss -w --config postcss.config.js ./_scss/main.scss -o ./assets/css/main.min.css",
+    "stylelint": "stylelint --config stylelintrc.js --syntax scss _scss/ --fix",
+    "compile": "node-sass -w --include-path scss _scss/main.scss assets/css/main.css --output-style expanded",
+    "minify": "node-sass -w --include-path scss _scss/main.scss assets/css/main.min.css --output-style compressed",
+    "build:expanded": "postcss --use autoprefixer --no-map -o assets/css/main.css assets/css/main.css",
+    "build:compressed": "postcss --use autoprefixer --no-map -o assets/css/main.min.css assets/css/main.min.css",
+    "watch-build:expanded": "nodemon -e scss -x \"npm run build:expanded\"",
+    "watch-build:compressed": "nodemon -e scss -x \"npm run build:compressed\"",
     "babel": "watchify -t babelify ./_js/script.js -o 'uglifyjs -c -m > ./assets/js/bundle.js' -v",
     "imagemin": "node imagemin.js -w",
     "php": "cpx \"./**/*.php\" ../../wordpress/wp-content/themes/blanktheme/ --watch",
@@ -25,15 +28,15 @@
     "themeimage": "cpx \"./screenshot.png\" ../../wordpress/wp-content/themes/blanktheme/ --watch",
     "js": "cpx \"./assets/js/*.js\" ../../wordpress/wp-content/themes/blanktheme/assets/js/ --watch",
     "images": "cpx \"./assets/images/{*.jpg, *.png, *.svg, *.gif}\" ../../wordpress/wp-content/themes/blanktheme/assets/images/ --watch",
-    "serve": "browser-sync --proxy 'http://vccw.test' start --files './*.php, ./assets/**, ../../var/www/wordpress'",
-    "all": "npm-run-all -p imagemin images stylelint compile minify build babel php css js themecss themeimage serve"
+    "serve": "browser-sync --proxy 'vccw.test' start --files './*.php, ./_scss/**, ./assets/css/main.min.css, ../../var/www/wordpress/'",
+    "all": "npm-run-all -p imagemin images compile minify watch-build:* babel php css js themecss themeimage serve"
   },
   "devDependencies": {
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babelify": "^7.3.0",
-    "browser-sync": "^2.26.3",
+    "browser-sync": "^2.26.7",
     "browserify": "^16.2.3",
     "cpx": "^1.5.0",
     "cssnano": "^4.1.0",
@@ -46,6 +49,7 @@
     "imagemin-svgo": "^7.0.0",
     "mkdirp": "^0.5.1",
     "node-sass": "^4.9.3",
+    "nodemon": "^1.19.1",
     "npm-run-all": "^4.1.3",
     "postcss-cli": "^6.1.1",
     "postcss-cssnext": "^3.1.0",
