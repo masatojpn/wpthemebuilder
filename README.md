@@ -2,23 +2,23 @@
 WordPress theme development environment.
 
 ## Quick start
-#### 1.Install VirtualBox.
+### 1.Install VirtualBox.
 [VirtualBox](https://www.virtualbox.org/)
 
-#### 2.Install VAGRANT.
+### 2.Install VAGRANT.
 [VAGRANT](https://www.vagrantup.com/)
 
-#### 3.Install plugin vagrant-hostupdater(optional)
+### 3.Install plugin vagrant-hostupdater(optional)
 ```
 $ vagrant plugin install vagrant-hostsupdater
 ```
 
-#### 4.Install Vagrant Box.
+### 4.Install Vagrant Box.
 ```
 $ vagrant box add vccw-team/xenial64
 ```
 
-#### 5.Clone this repository
+### 5.Clone this repository
 ```
 $ git clone https://github.com/masatojpn/wpthemebuilder.git
 ```
@@ -26,19 +26,19 @@ $ git clone https://github.com/masatojpn/wpthemebuilder.git
 or download.
 [Download ZIP](https://github.com/masatojpn/wpthemebuilder/archive/master.zip)
 
-#### 6.Run vagrant.
+### 6.Run vagrant.
 ```
 $ cd wpthemebuilder
 $ vagrant up
 ```
 
-#### 6.Install packages.
+### 7.Install packages.
 ```
 $ cd _theme/blanktheme
 $ npm install
 ```
 
-#### 7.Build theme file.
+### 8.Build theme file.
 ```
 $ npm run all
 ```
@@ -46,19 +46,20 @@ $ npm run all
 ## Development directory.
 `/_theme/blanktheme/`
 
-## Deploy
+## Usage
+If there are any changes in wordpress.sql on remote repository, run the below commands.
 
-#### 1.Setting Movefile.yml
-
-#### 2.Login VAGRANT SSH
 ```
-$ vagrant ssh
-$ cd /vagrant
+vagrant ssh
+wp db import /vagrant/wordpress.sql
+exit
 ```
 
-#### 3.Deploy production theme.
+If you make any changes in WodrPress DB, run the below commands.
 ```
-$ wordmove push -t
+vagrant ssh
+wp db export /vagrant/wordpress.sql
+exit
 ```
 
 ## Feature
