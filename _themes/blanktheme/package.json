@@ -28,7 +28,7 @@
     "themeimage": "cpx \"./screenshot.png\" ../../wordpress/wp-content/themes/blanktheme/ --watch",
     "js": "cpx \"./assets/js/*.js\" ../../wordpress/wp-content/themes/blanktheme/assets/js/ --watch",
     "images": "cpx \"./assets/images/{*.jpg, *.png, *.svg, *.gif}\" ../../wordpress/wp-content/themes/blanktheme/assets/images/ --watch",
-    "serve": "browser-sync --proxy 'vccw.test' start --files './*.php, ./_scss/**, ./assets/css/main.min.css, ../../var/www/wordpress/'",
+    "serve": "browser-sync --proxy 'vccw.local' start --files './*.php, ./_scss/**, ./assets/css/main.min.css, ../../var/www/wordpress/'",
     "all": "npm-run-all -p imagemin images compile minify watch-build:* babel php css js themecss themeimage serve"
   },
   "devDependencies": {

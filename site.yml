@@ -1,4 +1,4 @@
-hostname: vccw.test
+hostname: vccw.local
 ip: 192.168.33.99
 multisite: false
 linked_clone: true
