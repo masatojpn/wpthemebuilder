@@ -34,17 +34,16 @@ $ vagrant up
 
 ### 7.Install packages.
 ```
-$ cd _theme/blanktheme
 $ npm install
 ```
 
 ### 8.Build theme file.
 ```
-$ npm run all
+$ npx gulp
 ```
 
 ## Development directory.
-`/_theme/blanktheme/`
+`_theme/`
 
 ## Usage
 If there are any changes in wordpress.sql on remote repository, run the below commands.
