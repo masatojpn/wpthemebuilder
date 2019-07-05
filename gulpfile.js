@@ -26,14 +26,16 @@ var sourcemaps = require('gulp-sourcemaps');
 // ------------------------------------------------------------ //
 
 // -- uglify -------------------------------------------------- //
-gulp.task('uglify', function() {
+const js = (done) => {
   gulp.src('./_themes/**/!(_)*js')
   .pipe(uglify())
   .pipe(gulp.dest('./wordpress/wp-content/themes'))
-});
+  done();
+}
+
 
 // -- sass -------------------------------------------------- //
-gulp.task('styles', function() {
+const styles = () => {
   return gulp.src('./_themes/**/!(_)*.scss')
   .pipe(plumber())
   .pipe(sourcemaps.init())
@@ -48,14 +50,15 @@ gulp.task('styles', function() {
     suffix: '.min',
   }))
   .pipe(gulp.dest('./wordpress/wp-content/themes'))
-});
+}
+
 
 // -- PHP -------------------------------------------------- //
-gulp.task('php', function() {
+const php = () => {
   return gulp.src('./_themes/**/*.php')
   .pipe(plumber())
   .pipe(gulp.dest('./wordpress/wp-content/themes'))
-});
+}
 
 // -- Theme CSS -------------------------------------------------- //
 function css(done) {
@@ -66,7 +69,7 @@ function css(done) {
 };
 
 // -- Pug -------------------------------------------------- //
-gulp.task('pug', function() {
+const markup = () => {
   const option = {
     pretty: true,
   };
@@ -78,9 +81,9 @@ gulp.task('pug', function() {
     extname: '.php'
   }))
   .pipe(gulp.dest('./wordpress/wp-content/themes'));
-});
+}
 
-gulp.task('browser-sync', function() {
+const serve = () => {
   browserSync({
     open: false,
     startPath: '/',
@@ -90,18 +93,24 @@ gulp.task('browser-sync', function() {
     notify: false,
     ghostMode: false,
   });
-});
+}
 
-gulp.task('reload', () => {
+const reload = (done) => {
   browserSync.reload();
-});
+  done();
+}
+
 
 // -- Watch -------------------------------------------------- //
-gulp.task('watch', function() {
-  gulp.watch('./_themes/**/*.scss', ['styles', 'reload']);
-  gulp.watch('./_themes/**/*.pug', ['pug', 'reload']);
-  gulp.watch('./_themes/**/*.php', ['php', 'reload']);
-  gulp.watch('./_themes/**/*.js', ['uglify', 'reload']);
-});
+const fileWatch = (done) => {
+  gulp.watch(['./_themes/**/*.scss'], gulp.series(styles, reload));
+  gulp.watch(['./_themes/**/*.pug'], gulp.series(markup, reload));
+  gulp.watch(['./_themes/**/*.php'], gulp.series(php, reload));
+  gulp.watch(['./_themes/**/*.js'], gulp.series(js, reload));
+  done();
+}
 
-gulp.task('default', ['browser-sync', 'styles', 'pug', 'uglify', 'watch']);
+gulp.task('default', gulp.series(
+  gulp.parallel(markup, php, js, styles, css, fileWatch),
+  serve
+));
