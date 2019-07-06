@@ -3,5 +3,5 @@ module.exports = {
     src: '_themes/',
     dist: 'wordpress/wp-content/themes/'
   },
-  localhost: 'vccw.test'
+  localhost: 'wpthemebuilder.local'
 };

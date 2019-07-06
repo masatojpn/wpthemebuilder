@@ -1,5 +1,5 @@
-hostname: vccw.test
-ip: 192.168.33.99
+hostname: wpthemebuilder.local
+ip: 192.168.33.90
 multisite: false
 linked_clone: true
 memory: 5120
