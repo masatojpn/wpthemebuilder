@@ -1,42 +1,74 @@
 // ------------------------------------------------------------ //
 // Development Setting
 // ------------------------------------------------------------ //
-const localhost = "vccw.local/";
+const conf = require('./conf')
 
 // ------------------------------------------------------------ //
 // Package Setting
 // ------------------------------------------------------------ //
-var gulp = require('gulp');
-var connect = require('gulp-connect-php');
-var sass = require('gulp-sass');
-var pug = require('gulp-pug');
-var rename = require('gulp-rename');
-var autoprefixer = require('gulp-autoprefixer');
-var browserSync = require('browser-sync');
-var watch = require('gulp-watch');
-var notify = require('gulp-notify');
-var plumber = require('gulp-plumber');
-var uglify = require('gulp-uglify');
-var cleanCss = require('gulp-clean-css');
-var changed = require('gulp-changed');
-var sourcemaps = require('gulp-sourcemaps');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const pug = require('gulp-pug');
+const rename = require('gulp-rename');
+const autoprefixer = require('gulp-autoprefixer');
+const browserSync = require('browser-sync');
+const watch = require('gulp-watch');
+const notify = require('gulp-notify');
+const plumber = require('gulp-plumber');
+const uglify = require('gulp-uglify');
+const cleanCss = require('gulp-clean-css');
+const sourcemaps = require('gulp-sourcemaps');
+const imagemin = require('gulp-imagemin');
 
 // ------------------------------------------------------------ //
 // Tasks
 // ------------------------------------------------------------ //
+// -- Enable WordPress Theme -------------------------------------------------- //
+const enableWpTheme = (done) => {
+  gulp.src([
+    `${conf.path.src}**/*.css`,
+    `${conf.path.src}**/screenshot.png`
+  ])
+  .pipe(plumber())
+  .pipe(gulp.dest(`${conf.path.dist}`))
+  done();
+};
 
-// -- uglify -------------------------------------------------- //
-const js = (done) => {
-  gulp.src('./_themes/**/!(_)*js')
-  .pipe(uglify())
-  .pipe(gulp.dest('./wordpress/wp-content/themes'))
+// -- Markup(Pug) -------------------------------------------------- //
+const markup = (done) => {
+  const option = {
+    pretty: true,
+  };
+
+  return gulp.src([`${conf.path.src}**/*.pug`])
+  .pipe(plumber())
+  .pipe(pug(option))
+  .pipe(rename({
+    extname: '.php'
+  }))
+  .pipe(gulp.dest(`${conf.path.dist}`));
   done();
 }
 
+// -- PHP -------------------------------------------------- //
+const php = (done) => {
+  return gulp.src(`${conf.path.src}**/*.php`)
+  .pipe(plumber())
+  .pipe(gulp.dest(`${conf.path.dist}`))
+  done();
+}
 
-// -- sass -------------------------------------------------- //
-const styles = () => {
-  return gulp.src('./_themes/**/!(_)*.scss')
+// -- Script -------------------------------------------------- //
+const js = (done) => {
+  gulp.src(`${conf.path.src}**/!(_)*js`)
+  .pipe(uglify())
+  .pipe(gulp.dest(`${conf.path.dist}`))
+  done();
+}
+
+// -- Sass -------------------------------------------------- //
+const styles = (done) => {
+  return gulp.src(`${conf.path.src}**/!(_)*.scss`)
   .pipe(plumber())
   .pipe(sourcemaps.init())
   .pipe(sass({
@@ -44,73 +76,57 @@ const styles = () => {
   }).on('error', sass.logError))
   .pipe(autoprefixer())
   .pipe(sourcemaps.write())
-  .pipe(gulp.dest('./wordpress/wp-content/themes'))
+  .pipe(gulp.dest(`${conf.path.dist}`))
   .pipe(cleanCss())
   .pipe(rename({
     suffix: '.min',
   }))
-  .pipe(gulp.dest('./wordpress/wp-content/themes'))
-}
-
-
-// -- PHP -------------------------------------------------- //
-const php = () => {
-  return gulp.src('./_themes/**/*.php')
-  .pipe(plumber())
-  .pipe(gulp.dest('./wordpress/wp-content/themes'))
-}
-
-// -- Theme CSS -------------------------------------------------- //
-function css(done) {
-  gulp.src('_themes/**/*.css')
-  .pipe(plumber())
-  .pipe(gulp.dest('./wordpress/wp-content/themes'))
+  .pipe(gulp.dest(`${conf.path.dist}`))
   done();
-};
-
-// -- Pug -------------------------------------------------- //
-const markup = () => {
-  const option = {
-    pretty: true,
-  };
-
-  return gulp.src(['./_themes/**/*.pug'])
-  .pipe(plumber())
-  .pipe(pug(option))
-  .pipe(rename({
-    extname: '.php'
-  }))
-  .pipe(gulp.dest('./wordpress/wp-content/themes'));
 }
 
-const serve = () => {
+// -- ImageminTask -------------------------------------------------- //
+const imageminTask = (done) => {
+  return gulp.src(`${conf.path.src}**/*.{jpg,jpeg,png,gif}`)
+  .pipe(imagemin())
+  .pipe(gulp.dest(`${conf.path.dist}`))
+  done();
+}
+
+// -- Run Serve -------------------------------------------------- //
+const serve = (done) => {
   browserSync({
     open: false,
     startPath: '/',
-		proxy: localhost,
+		proxy: `${conf.localhost}`,
     reloadDelay: 1000,
     once: true,
     notify: false,
     ghostMode: false,
   });
+  done();
 }
 
+// -- Browser Reload -------------------------------------------------- //
 const reload = (done) => {
   browserSync.reload();
   done();
 }
 
-
-// -- Watch -------------------------------------------------- //
+// -- File Watch -------------------------------------------------- //
 const fileWatch = (done) => {
-  gulp.watch(['./_themes/**/*.scss'], gulp.series(styles, reload));
-  gulp.watch(['./_themes/**/*.pug'], gulp.series(markup, reload));
-  gulp.watch(['./_themes/**/*.php'], gulp.series(php, reload));
-  gulp.watch(['./_themes/**/*.js'], gulp.series(js, reload));
+  gulp.watch([`${conf.path.src}**/*.scss`], gulp.series(styles, reload));
+  gulp.watch([`${conf.path.src}**/*.pug`], gulp.series(markup, reload));
+  gulp.watch([`${conf.path.src}**/*.php`], gulp.series(php, reload));
+  gulp.watch([`${conf.path.src}**/*.js`], gulp.series(js, reload));
+  gulp.watch([`${conf.path.src}**/*.{jpg,jpeg,png,gif}`], gulp.series(imageminTask, reload));
   done();
 }
 
+// ------------------------------------------------------------ //
+// Build command "npx gulp"
+// ------------------------------------------------------------ //
 gulp.task('default', gulp.series(
-  gulp.parallel(markup, php, js, styles, css, fileWatch),
+  gulp.parallel(enableWpTheme, markup, php, js, imageminTask, styles, fileWatch),
   serve
 ));
