@@ -9,13 +9,14 @@ const conf = require('./conf')
 const gulp = require('gulp');
 const sass = require('gulp-sass');
 const pug = require('gulp-pug');
-const rename = require('gulp-rename');
 const autoprefixer = require('gulp-autoprefixer');
 const browserSync = require('browser-sync');
 const watch = require('gulp-watch');
 const notify = require('gulp-notify');
 const plumber = require('gulp-plumber');
 const uglify = require('gulp-uglify');
+const rename = require('gulp-rename');
+const babel = require('gulp-babel');
 const cleanCss = require('gulp-clean-css');
 const sourcemaps = require('gulp-sourcemaps');
 const imagemin = require('gulp-imagemin');
@@ -60,8 +61,14 @@ const php = (done) => {
 
 // -- Script -------------------------------------------------- //
 const js = (done) => {
-  gulp.src(`${conf.path.src}**/!(_)*js`)
+  return gulp.src(`${conf.path.src}**/!(_)*js`)
+  .pipe(babel({
+    "presets": ["@babel/preset-env"]
+  }))
   .pipe(uglify())
+  .pipe(rename({
+    extname: '.min.js'
+  }))
   .pipe(gulp.dest(`${conf.path.dist}`))
   done();
 }
